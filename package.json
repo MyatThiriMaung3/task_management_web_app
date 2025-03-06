@@ -1,0 +1,27 @@
+{
+  "name": "task_management_web_app",
+  "version": "1.0.0",
+  "description": "**This project is created for the midterm project of Web Programming with Node.js course at Ton Duc Thang University.**",
+  "main": "index.js",
+  "scripts": {
+    "devStart": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MyatThiriMaung3/task_management_web_app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MyatThiriMaung3/task_management_web_app/issues"
+  },
+  "homepage": "https://github.com/MyatThiriMaung3/task_management_web_app#readme",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}

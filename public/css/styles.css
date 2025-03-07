@@ -41,9 +41,14 @@ a {
 .white-text {
     color: #FFFFFF;
 }
-.parent {
+.parent-login {
     display: grid;
     grid-template-columns: 3fr 2fr;
+    gap: 20px;
+}
+.parent-signup {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
     gap: 20px;
 }
 .parent-container {

@@ -32,6 +32,12 @@ a {
 .align-center {
     text-align: center;
 }
+.parent-container-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
 .primary-text {
     color: #393939;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -145,6 +151,18 @@ a {
 .padding-top-20 {
     padding-top: 20px;
 }
+.margin-top-20 {
+    margin-top: 20px;
+}
+.margin-bottom-20 {
+    margin-bottom: 20px;
+}
+.gray-background {
+    background-color: #EEF2F5;
+}
+.custom-checkbox {
+    accent-color: #393939;
+}
 .hidden {
     visibility: hidden;
 }
@@ -234,6 +252,10 @@ a {
     object-fit: cover;
     justify-content: center;
     align-items: center;
+}
+.profile-image-size {
+    width: 100px;
+    height: 100px;;
 }
 .search-container {
     display: flex;

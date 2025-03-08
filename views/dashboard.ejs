@@ -1,0 +1,272 @@
+<!DOCTYPE>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dashboard</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <link rel="stylesheet" href="/css/styles.css">
+    </head>
+
+    <body>
+
+        <div class="row-container space-between">
+
+            <div class="sidebar primary-text width-auto">
+                    
+                <h3 class="primary-text heading-text black-text"><i class="fas fa-clipboard-list ic-menu-size"></i> Mangeons</h3>
+                
+
+                <ul>
+                    <li><a href="#"><i class="fas fa-th-large ic-menu-size"></i> Dashboard</a></li>
+                    <li><a href="#"><i class="fas fa-chart-bar ic-menu-size"></i> Analysis</a></li>
+                    <li><a href="#"><i class="fas fa-user ic-menu-size"></i> Account</a></li>
+                </ul>
+
+                <div class="logout-container">
+                    <a href="#"><i class="fas fa-sign-out-alt ic-menu-size"></i> Logout</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="column-container width-100 height-100 main-content">
+
+            <div class="row-container space-between">
+
+                <div class="search-container width-100 primary-text">
+                    <i class="fas fa-search ic-menu-size"></i>
+                    <input type="text" placeholder="Search" class="search-input">
+                </div>                
+                
+                <img src="/images/profile.jpeg" alt="profile" class="circle-image">
+                
+            </div>
+
+            <div class="row-container space-between padding-bottom-20 padding-top-20">
+                <p class="primary-text heading-text width-100">Board</p>
+
+                <p class="primary-text black-text width-auto">This Week</p>
+
+                <div class="menu-container">
+                    <i class="fas fa-angle-down ic-menu-size" onclick="toggleMenu('periodMenuDropdownDefault')"></i>
+                    <ul class="menu-dropdown" id="periodMenuDropdownDefault">
+                        <li><a class="primary-small-text black-text" href="#">Today</a></li>
+                        <li><a class="primary-small-text black-text" href="#">This Week</a></li>
+                        <li><a class="primary-small-text black-text" href="#">This Month</a></li>
+                        <li><a class="primary-small-text black-text" href="#">This Year</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row-container space-between height-100">
+                <div class="column-container tasks-container">
+                    <div class="row-container space-between">
+                        <p class="primary-text black-text width-100">To do</p>
+                        
+                        <i class="fas fa-plus ic-menu-size"></i>
+                        <p class="primary-small-text black-text">Recently Added</p>
+                        <div class="menu-container">
+                            <i class="fas fa-sort-amount-down ic-menu-size" onclick="toggleMenu('sortMenuDropdownDefault')"></i>
+                            <ul class="menu-dropdown" id="sortMenuDropdownDefault">
+                                <li><a class="primary-small-text black-text" href="#">by Recently Added</a></li>
+                                <li><a class="primary-small-text black-text" href="#">by Priority L-H</a></li>
+                                <li><a class="primary-small-text black-text" href="#">by Priority H-L</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="column-container card-container">
+                        <div class="row-container space-between">
+                            <div class="row-container">
+                                <i class="fas fa-circle red-icon tag-size"></i>
+                                <p class="primary-small-text black-text">Important</p>
+                            </div>
+            
+                            <div class="menu-container">
+                                <i class="fas fa-ellipsis-h ic-menu-size" onclick="toggleMenu('menuDropdown')"></i>
+                                <ul class="menu-dropdown" id="menuDropdown">
+                                    <li><a class="primary-small-text black-text" href="#">Edit</a></li>
+                                    <li><a class="primary-small-text black-text" href="#">Delete</a></li>
+                                    <li><a class="primary-small-text black-text" href="#">Share</a></li>
+                                </ul>
+                            </div>
+                        
+                        </div>
+            
+                        <h4 class="primary-text black-text task-title-text">Task Title</h4>
+                        <p class="primary-text black-text">Task body, where the description of the task will be written. The task will have colored mark which will represent the priority of the respective task.</p>
+            
+                        <p class="primary-small-text finished-task-box hidden">Finished Task</p>
+                    </div>
+                        
+                    <div class="column-container card-container">
+                        <div class="row-container space-between">
+                            <div class="row-container">
+                                <i class="fas fa-circle red-icon tag-size"></i>
+                                <p class="primary-small-text black-text">Important</p>
+                            </div>
+            
+                            <div class="menu-container">
+                                <i class="fas fa-ellipsis-h ic-menu-size" onclick="toggleMenu('menuDropdown')"></i>
+                                <ul class="menu-dropdown" id="menuDropdown">
+                                    <li><a class="primary-small-text black-text" href="#">Edit</a></li>
+                                    <li><a class="primary-small-text black-text" href="#">Delete</a></li>
+                                    <li><a class="primary-small-text black-text" href="#">Share</a></li>
+                                </ul>
+                            </div>
+                        
+                        </div>
+            
+                        <h4 class="primary-text black-text task-title-text">Task Title</h4>
+                        <p class="primary-text black-text">Task body, where the description of the task will be written. The task will have colored mark which will represent the priority of the respective task.</p>
+            
+                        <p class="primary-small-text finished-task-box hidden">Finished Task</p>
+                    </div>
+                </div>
+    
+    
+                <div class="column-container tasks-container">
+                    <div class="row-container space-between">
+                        <p class="primary-text black-text width-100">In Progress</p>
+                        
+                        <p class="primary-small-text black-text">Recently Added</p>
+                        <div class="menu-container">
+                            <i class="fas fa-sort-amount-down ic-menu-size" onclick="toggleMenu('sortMenuDropdownStarted')"></i>
+                            <ul class="menu-dropdown" id="sortMenuDropdownStarted">
+                                <li><a class="primary-small-text black-text" href="#">by Recently Added</a></li>
+                                <li><a class="primary-small-text black-text" href="#">by Priority L-H</a></li>
+                                <li><a class="primary-small-text black-text" href="#">by Priority H-L</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="column-container card-container">
+                        <div class="row-container space-between">
+                            <div class="row-container">
+                                <i class="fas fa-circle red-icon tag-size"></i>
+                                <p class="primary-small-text black-text">Important</p>
+                            </div>
+            
+                            <div class="menu-container">
+                                <i class="fas fa-ellipsis-h ic-menu-size" onclick="toggleMenu('menuDropdown')"></i>
+                                <ul class="menu-dropdown" id="menuDropdown">
+                                    <li><a class="primary-small-text black-text" href="#">Edit</a></li>
+                                    <li><a class="primary-small-text black-text" href="#">Delete</a></li>
+                                    <li><a class="primary-small-text black-text" href="#">Share</a></li>
+                                </ul>
+                            </div>
+                        
+                        </div>
+            
+                        <h4 class="primary-text black-text task-title-text">Task Title</h4>
+                        <p class="primary-text black-text">Task body, where the description of the task will be written. The task will have colored mark which will represent the priority of the respective task.</p>
+            
+                        <p class="primary-small-text finished-task-box hidden">Finished Task</p>
+                    </div>
+                        
+                    
+                </div>
+    
+    
+                <div class="column-container tasks-container">
+                    <div class="row-container space-between">
+                        <p class="primary-text black-text width-100">Done</p>
+                        
+                        <p class="primary-small-text black-text">Recently Added</p>
+                        <div class="menu-container">
+                            <i class="fas fa-sort-amount-down ic-menu-size" onclick="toggleMenu('sortMenuDropdownFinished')"></i>
+                            <ul class="menu-dropdown" id="sortMenuDropdownFinished">
+                                <li><a class="primary-small-text black-text" href="#">by Recently Added</a></li>
+                                <li><a class="primary-small-text black-text" href="#">by Priority L-H</a></li>
+                                <li><a class="primary-small-text black-text" href="#">by Priority H-L</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="column-container card-container">
+                        <div class="row-container space-between">
+                            <div class="row-container">
+                                <i class="fas fa-circle red-icon tag-size"></i>
+                                <p class="primary-small-text black-text">Important</p>
+                            </div>
+            
+                            <div class="menu-container">
+                                <i class="fas fa-ellipsis-h ic-menu-size" onclick="toggleMenu('menuDropdown')"></i>
+                                <ul class="menu-dropdown" id="menuDropdown">
+                                    <li><a class="primary-small-text black-text" href="#">Edit</a></li>
+                                    <li><a class="primary-small-text black-text" href="#">Delete</a></li>
+                                    <li><a class="primary-small-text black-text" href="#">Share</a></li>
+                                </ul>
+                            </div>
+                        
+                        </div>
+            
+                        <h4 class="primary-text black-text task-title-text">Task Title</h4>
+                        <p class="primary-text black-text">Task body, where the description of the task will be written. The task will have colored mark which will represent the priority of the respective task.</p>
+            
+                        <p class="primary-small-text finished-task-box">Finished Task</p>
+                    </div>
+                        
+    
+                    <div class="column-container card-container">
+                        <div class="row-container space-between">
+                            <div class="row-container">
+                                <i class="fas fa-circle red-icon tag-size"></i>
+                                <p class="primary-small-text black-text">Important</p>
+                            </div>
+            
+                            <div class="menu-container">
+                                <i class="fas fa-ellipsis-h ic-menu-size" onclick="toggleMenu('menuDropdown')"></i>
+                                <ul class="menu-dropdown" id="menuDropdown">
+                                    <li><a class="primary-small-text black-text" href="#">Edit</a></li>
+                                    <li><a class="primary-small-text black-text" href="#">Delete</a></li>
+                                    <li><a class="primary-small-text black-text" href="#">Share</a></li>
+                                </ul>
+                            </div>
+                        
+                        </div>
+            
+                        <h4 class="primary-text black-text task-title-text">Task Title</h4>
+                        <p class="primary-text black-text">Task body, where the description of the task will be written. The task will have colored mark which will represent the priority of the respective task.</p>
+            
+                        <p class="primary-small-text finished-task-box">Finished Task</p>
+                    </div>
+    
+                    <div class="column-container card-container">
+                        <div class="row-container space-between">
+                            <div class="row-container">
+                                <i class="fas fa-circle red-icon tag-size"></i>
+                                <p class="primary-small-text black-text">Important</p>
+                            </div>
+            
+                            <div class="menu-container">
+                                <i class="fas fa-ellipsis-h ic-menu-size" onclick="toggleMenu('menuDropdown')"></i>
+                                <ul class="menu-dropdown" id="menuDropdown">
+                                    <li><a class="primary-small-text black-text" href="#">Edit</a></li>
+                                    <li><a class="primary-small-text black-text" href="#">Delete</a></li>
+                                    <li><a class="primary-small-text black-text" href="#">Share</a></li>
+                                </ul>
+                            </div>
+                        
+                        </div>
+            
+                        <h4 class="primary-text black-text task-title-text">Task Title</h4>
+                        <p class="primary-text black-text">Task body, where the description of the task will be written. The task will have colored mark which will represent the priority of the respective task.</p>
+            
+                        <p class="primary-small-text finished-task-box">Finished Task</p>
+                    </div>
+                    
+                </div>
+    
+            </div>
+        </div>
+        
+        
+
+        
+        
+
+        <script src="/js/script.js"></script>
+    </body>
+</html>

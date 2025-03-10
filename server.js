@@ -22,4 +22,7 @@ app.get("/profile", (req, res) => {
     res.render("profile")
 })
 
+app.get("/analysis", (req, res) => {
+    res.render("analysis")
+})
 app.listen(3000)

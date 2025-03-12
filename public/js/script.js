@@ -1,26 +1,3 @@
-document.getElementById("loginForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
-    if (username && password) {
-        alert("Login successful!");
-    } else {
-        alert("Please enter both username and password.");
-    }
-});
-
-document.getElementById("signupForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-    const username = document.getElementById("username").value;
-    const confirmedPassword = document.getElementById("confirmedPassword").value;
-    const password = document.getElementById("password").value;
-    if (confirmedPassword === password) {
-        alert("Signup successful!");
-    } else {
-        alert("Passwords do not match. Please try again.");
-    }
-});
-
 function toggleMenu(menuId) {
     const menu = document.getElementById(menuId);
     menu.style.display = (menu.style.display === "block") ? "none" : "block";
@@ -37,6 +14,40 @@ document.addEventListener("click", function(event) {
 });
 
 
+function openImagePopup() {
+    const profileImage = document.querySelector(".profile-image-size").src;
+    document.querySelector("#imagePopup img").src = profileImage; // Set image dynamically
+    document.getElementById("imagePopup").style.display = "flex";
+}
+
+function openForgotPasswordPopup() {
+    document.getElementById("forgotPasswordPopup").style.display = "flex";
+}
+
+function closePopup(tempPopup) {
+    document.getElementById(tempPopup).style.display = "none";
+}
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const checkbox = document.getElementById("changePassword");
+    const passwordFields = document.querySelectorAll("#newPassword, #confirmedPassword");
+
+    checkbox.addEventListener("change", function () {
+        passwordFields.forEach(field => {
+            field.disabled = !checkbox.checked; // Enable if checked, disable if not
+        });
+    });
+});
+
+function generateUsername() {
+    fetch("/generate-username")
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById("signup-username").value = data.username;
+    })
+    .catch(error => console.error("The error while filling generated username : ", error))
+}
 
 
 document.addEventListener("DOMContentLoaded", function () {

@@ -14,7 +14,7 @@
         <%- include("partials/_sidebar") %>
 
 
-        <div class="column-container width-100 height-100 main-content">
+        <div class="column-container main-content">
 
             <%- include("partials/_searchbar") %>
 
@@ -34,8 +34,8 @@
                 </div>
             </div>
 
-            <div class="row-container space-between height-100">
-                <div class="column-container tasks-container">
+            <div class="row-container align-item-top width-100 height-100 space-between height-100">
+                <div class="height-auto tasks-container">
                     <div class="row-container space-between">
                         <p class="primary-text black-text width-100">To do</p>
                         
@@ -49,6 +49,8 @@
                                 <li><a class="primary-small-text black-text" href="#">by Priority H-L</a></li>
                             </ul>
                         </div>
+
+                        <i class="fas fa-angle-down ic-menu-size"></i>
                     </div>
                     
                     <div class="column-container card-container">
@@ -101,7 +103,7 @@
                 </div>
     
     
-                <div class="column-container tasks-container">
+                <div class="height-auto tasks-container">
                     <div class="row-container space-between">
                         <p class="primary-text black-text width-100">In Progress</p>
                         
@@ -114,6 +116,8 @@
                                 <li><a class="primary-small-text black-text" href="#">by Priority H-L</a></li>
                             </ul>
                         </div>
+
+                        <i class="fas fa-angle-down ic-menu-size"></i>
                     </div>
                     
                     <div class="column-container card-container">
@@ -144,7 +148,7 @@
                 </div>
     
     
-                <div class="column-container tasks-container">
+                <div class="height-auto tasks-container">
                     <div class="row-container space-between">
                         <p class="primary-text black-text width-100">Done</p>
                         
@@ -157,6 +161,8 @@
                                 <li><a class="primary-small-text black-text" href="#">by Priority H-L</a></li>
                             </ul>
                         </div>
+
+                        <i class="fas fa-angle-down ic-menu-size"></i>
                     </div>
                     
                     <div class="column-container card-container">
@@ -232,29 +238,6 @@
                         <p class="primary-small-text finished-task-box">Finished Task</p>
                     </div>
 
-                    <div class="column-container card-container">
-                        <div class="row-container space-between">
-                            <div class="row-container">
-                                <i class="fas fa-circle red-icon tag-size"></i>
-                                <p class="primary-small-text black-text">Important</p>
-                            </div>
-            
-                            <div class="menu-container">
-                                <i class="fas fa-ellipsis-h ic-menu-size" onclick="toggleMenu('menuDropdown')"></i>
-                                <ul class="menu-dropdown" id="menuDropdown">
-                                    <li><a class="primary-small-text black-text" href="#">Edit</a></li>
-                                    <li><a class="primary-small-text black-text" href="#">Delete</a></li>
-                                    <li><a class="primary-small-text black-text" href="#">Share</a></li>
-                                </ul>
-                            </div>
-                        
-                        </div>
-            
-                        <h4 class="primary-text black-text task-title-text">Task Title</h4>
-                        <p class="primary-text black-text">Task body, where the description of the task will be written. The task will have colored mark which will represent the priority of the respective task.</p>
-            
-                        <p class="primary-small-text finished-task-box">Finished Task</p>
-                    </div>
                     
                 </div>
     

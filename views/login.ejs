@@ -21,19 +21,19 @@
             <div class="form-container">
                 <h3 class="text-center mb-4 primary-text heading-text">Login</h3>
 
-                <form id="loginForm">
+                <form id="loginForm" action="/login" method="post">
                     <div class="mb-3">
                         <label for="username" class="form-label primary-text">Username</label>
-                        <input type="text" class="form-control" id="username" required>
+                        <input type="text" class="form-control primary-text black-text" name="username" id="login-username" required>
                     </div>
 
                     <div class="mb-3">
                         <label for="password" class="form-label primary-text">Password</label>
-                        <input type="password" class="form-control" id="password" required>
+                        <input type="password" class="form-control" name="password" id="login-password" required>
                     </div>
 
-                    <p class="align-right">
-                        <a class="primary-small-text" href="#">Forgot password?</a>
+                    <p class="align-right primary-small-text font-italic" onclick="openForgotPasswordPopup()">
+                        Forgot password?
                     </p>
 
                     <button type="submit" class="primary-text white-text btn btn-primary w-100">Login</button>
@@ -43,13 +43,25 @@
                     </div>
 
                     <p class="primary-small-text align-center">New Tasker? 
-                        <a class="primary-small-text" href="#">Create Account</a>
+                        <a class="primary-small-text font-bold-italic" href="/signup">Create Account</a>
                     </p>
+
+                    <% if (error) { %>
+                        <p class="primary-small-text red-icon align-center"><%= error %></p>
+                    <% } %>
                 </form>
             </div>
         </div>
 
     </div>
+
+    <div id="forgotPasswordPopup" class="popup-overlay">
+        <div class="popup-content">
+            <span class="close-btn" onclick="closePopup('forgotPasswordPopup')">&times;</span>
+            <p class="primary-text black-text align-left">Dear Customer,<br><br>Unfortunately, You have to remember your password. We can't do anything for you in this case.(or anyother case either)<br>But FORTUNATELY, if you totally forgot the password, you can go create a new account. Or do anything else you like. We're always here for you, trying to develop user-centered designs, but just trying only, not doing anything. Any ideas from you, our dear customer, is warmly welcomed, but we will not follow your idea no matter what *^^*.<br>Hope you have best day!<br><br>Yours User-friendly, User-experience-centered developer,<br>Myat</p>
+        </div>
+    </div>
+
 
     <script src="/js/script.js"></script>
 </body>

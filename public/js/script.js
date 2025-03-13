@@ -13,6 +13,10 @@ document.addEventListener("click", function(event) {
     }
 });
 
+function goToDashboard() {
+    window.location.href = "/dashboard";
+}
+
 
 function openImagePopup() {
     const profileImage = document.querySelector(".profile-image-size").src;

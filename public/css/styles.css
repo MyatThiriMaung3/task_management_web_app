@@ -140,7 +140,12 @@ a {
     align-items: center;
     gap: 20px;
 }
-
+.search-result-overflow {
+    height: 100vh; /* Ensures it takes full height */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
 .analysis-description-width {
     width: 100px;
 }
@@ -213,8 +218,33 @@ a {
 .green-icon {
     color: green;
 }
-.finished-task-box {
-    background-color: green;
+.back-btn {
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    background-color: #393939; /* Matches UI */
+    padding: 10px 20px;
+}
+.search-result-container {
+    background-color: #EEF2F5;
+    width: 500px;
+    flex-grow: 1; /* Takes all remaining space */
+    overflow-y: auto; /* Enables scrolling */
+    padding-top: 30px;
+    padding-bottom: 50px;
+    gap: 25px !important;
+    border-radius: 8px;
+}
+.finish-task-box {
+    background-color: #B4D9EF;
+    color: black;
+    padding: 5px 12px;
+    border-radius: 8px;
+    display: inline-block;
+}
+.start-task-box {
+    background-color: #8D818C;
     color: white;
     padding: 5px 12px;
     border-radius: 8px;

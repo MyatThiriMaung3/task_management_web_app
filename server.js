@@ -99,6 +99,10 @@ app.get("/analysis", isAuthenticated, (req, res) => {
     res.render("analysis", {activePage: "analysis"})
 })
 
+app.get("/search-result", isAuthenticated, (req, res) => {
+    res.render("search-result")
+})
+
 app.get("/logout", (req, res) => {
     req.session.destroy(err => {
         if (err) {

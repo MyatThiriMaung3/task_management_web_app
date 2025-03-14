@@ -139,6 +139,8 @@ a {
     height: 100%;
     align-items: center;
     gap: 20px;
+    overflow-y: auto; /* Enables vertical scrolling */
+    max-height: 80vh;
 }
 .search-result-overflow {
     height: 100vh; /* Ensures it takes full height */

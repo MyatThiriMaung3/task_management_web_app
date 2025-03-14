@@ -1,10 +1,27 @@
 const { error } = require('console')
+require('dotenv').config()
 const express = require('express')
 const path = require('path')
 const session = require('express-session')
+const multer = require('multer')
 const app = express()
+const cors = require('cors')
+const db = require('./db')
 
 app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
+app.use(cors())
+app.set("view engine", "ejs")
+app.use(express.static(path.join(__dirname, 'public')))
+
+const storage = multer.diskStorage({
+    destination: "./public/images/",
+    filename: function (req, file, cb) {
+        cb(null, "profile_" + Date.now() + path.extname(file.originalname))
+    }
+})
+
+const upload = multer({ storage: storage })
 
 app.use(session({
     secret: 'SECRET_KEY_TO_STORE_IN_ENV_FILE_MAYBE',
@@ -17,14 +34,6 @@ app.use((req, res, next) => {
     next()
 })
 
-app.set("view engine", "ejs")
-app.use(express.static(path.join(__dirname, 'public')))
-
-const users = [
-    { username: "user123", password: "pass123" },
-    { username: "john_doe", password: "johndoe" },
-    { username: "coder99", password: "code99" }
-]
 
 function isAuthenticated(req, res, next) {
     if (req.session.loggedInUser) {
@@ -34,16 +43,40 @@ function isAuthenticated(req, res, next) {
     }
 }
 
-app.get("/generate-username", (req, res) => {
+app.get("/generate-username", isAuthenticated, async (req, res) => {
     let username;
     let isUnique = false
 
     while (!isUnique) {
         username = "user" + Math.floor(Math.random() * 1000)
-        isUnique = !users.find(user => user.username === username)
-    }
 
-    res.json({ username })
+        const query = "SELECT * FROM users WHERE username = ?";
+        db.query(query, [username], (err, results) => {
+            if (err) {
+                return res.status(500).json({ error: "Database error"})
+            }
+
+            if (results.length === 0) {
+                isUnique = true
+                res.json({username})
+            }
+        })
+    }
+})
+
+app.post("/upload-profile", isAuthenticated, upload.single("profileImage"), (req, res) => {
+    const username = req.session.loggedInUser.username
+    const profileImage = "/images/" + req.file.filename
+
+    db.query("UPDATE users SET user_profile = ? WHERE username = ?", [profileImage, username], (err, results) => {
+        if (err) {
+            console.log(err)
+            return res.status(500).json({ error: "Database connection error"})
+        }
+
+        req.session.loggedInUser.profile = profileImage
+        res.redirect("/profile")
+    })
 })
 
 app.get("/dashboard", isAuthenticated, (req, res) => {
@@ -56,22 +89,28 @@ app.get("/login", (req, res) => {
 
 app.post("/login", (req, res) => {
     const {username, password} = req.body
-    
-    const user = users.find(user => user.username === username)
 
-    if (user) {
-        if (user.password === password) {
-            req.session.loggedInUser = {
-                username: user.username,
-                password: user.password
-            }
-            res.redirect("/dashboard")
-        } else {
-            res.render("login", {error: "Invalid password"})
+    db.query("SELECT * FROM users WHERE username = ?", [username], (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: "Database connection error"})
         }
-    } else {
-        res.render("login", {error: "User not found"})
-    }
+
+        if (results.length > 0) {
+            const user = results[0]
+
+            if (user.user_password === password) {
+                req.session.loggedInUser = {
+                    username: user.username,
+                    profile: user.user_profile
+                }
+                res.redirect("/dashboard")
+            } else {
+                res.render("login", {error: "Invalid password"})
+            }
+        } else {
+            res.render("login", {error: "User not found"})
+        }
+    })
 })
 
 app.get("/signup", (req, res) => {
@@ -81,14 +120,28 @@ app.get("/signup", (req, res) => {
 app.post("/signup", (req, res) => {
     const {username, password, confirmedPassword} = req.body
 
-    if (users.find(user => user.username === username)) {
-        res.render("signup", {error: "Username already exists"})
-    } else if (password !== confirmedPassword) {
-        res.render("signup", {error: "Passwords do not match"})
-    } else {
-        users.push({username, password})
-        res.redirect("/login")
+    if (password !== confirmedPassword) {
+        return res.render("signup", {error: "Passwords do not match"})
     }
+
+    db.query("SELECT * FROM users WHERE username = ?", [username], (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: "Database connection error"})
+        }
+
+        if (results > 0) {
+            return res.render("signup", {error: "Username already exists"})
+        }
+
+        db.query("INSERT INTO users (username, user_password, user_profile) VALUES (?, ?, ?)", [username, password, "/images/profile.jpeg"], (err, results) => {
+            if (err) {
+                return res.status(500).json({ error: "Database connection error"})
+            }
+
+            res.redirect("/login")
+        })
+    })
+
 })
 
 app.get("/profile", isAuthenticated, (req, res) => {

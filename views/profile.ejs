@@ -18,14 +18,18 @@
                 <h3 class="primary-text heading-text black-text">My Profile</h3>
     
                 <div class="row-container card-container width-auto space-between">
-                    <img class="circle-image profile-image-size" src="images/profile.jpeg" alt="Profile Image" onclick="openImagePopup()">
+                    <img class="circle-image profile-image-size" src="<%= loggedInUser.profile %>" alt="Profile Image" onclick="openImagePopup()">
     
                     <p class="width-auto primary-text black-text"><%= loggedInUser.username || "YOU! CHEATER!!!" %></p>
     
                     <div class="width-100"></div>
-    
-                    <button class="primary-text white-text btn-primary width-auto">Upload Profile Image</button>
-                </div>
+                        <form action="/upload-profile" method="POST" enctype="multipart/form-data">
+                            <input class="primary-text black-text" type="file" name="profileImage" accept="image/*" required>
+                            <button type="submit" class="primary-text white-text btn-primary width-auto">Upload Profile Image</button>
+                        </form>
+                    </div>
+
+                    
     
                 <div class="card-container width-auto padding-bottom-20 padding-top-20">
                     <div>

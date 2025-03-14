@@ -35,7 +35,7 @@ function closePopup(tempPopup) {
 
 document.addEventListener("DOMContentLoaded", function () {
     const checkbox = document.getElementById("changePassword");
-    const passwordFields = document.querySelectorAll("#newPassword, #confirmedPassword");
+    const passwordFields = document.querySelectorAll("#profile-newPassword, #profile-confirmedPassword");
 
     checkbox.addEventListener("change", function () {
         passwordFields.forEach(field => {

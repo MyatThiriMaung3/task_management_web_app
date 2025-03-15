@@ -316,7 +316,11 @@ a {
 }
 .profile-image-size {
     width: 100px;
-    height: 100px;;
+    height: 100px;
+}
+.min-height-70 {
+    min-height: 70vh;
+    align-items: flex-start;
 }
 .search-container {
     display: flex;
@@ -487,4 +491,22 @@ a {
     border: none;       /* Remove border */
     cursor: pointer;    /* Make it clickable */
     padding: 0;         /* Remove padding */
+}
+.toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 20px;
+    background-color: #333;
+    color: white;
+    border-radius: 5px;
+    opacity: 0.9;
+    transition: opacity 0.3s ease-in-out;
+}
+.toast.success {
+    background-color: green;
+}
+.toast.error {
+    background-color: red;
 }

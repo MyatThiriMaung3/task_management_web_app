@@ -211,6 +211,9 @@ a {
 .tag-size {
     font-size: 6px;
 }
+.black-color {
+    color: #000000;
+}
 .red-icon {
     color: red;
 }

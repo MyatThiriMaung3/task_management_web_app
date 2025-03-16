@@ -11,7 +11,7 @@ function goToDashboard() {
 }
 
 function showTaskDetails(event, taskElement) {
-    if (event.target.tagName === "BUTTON") {
+    if (event.target.tagName === "BUTTON" || event.target.classList.contains("fa-ellipsis-h") ) {
         return
     }
     console.log("show task details has been called")
@@ -26,15 +26,6 @@ function showTaskDetails(event, taskElement) {
 
     popupOverlay.style.display = "flex"
 }
-
-// function closeTaskDetailsPopup() {
-//     const popupContainer = document.getElementById("popupTaskContainer")
-//     const popOverlay = document.getElementById("taskDetailsPopup")
-
-//     if(originalTaskElement) {
-//         originalTaskElement.appendChild(popupContainer.firstElementChild)
-//     }
-// }
 
 function openImagePopup() {
     const profileImage = document.querySelector(".profile-image-size").src;
@@ -100,7 +91,7 @@ function performSearch(searchInput) {
 
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function (event) {
     
 
 
@@ -115,17 +106,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         })
     }
-
-    // const menu = document.getElementById("menuDropdown");
-    // const menuIcon = document.querySelector(".ic-menu-size");
-
-    // if(menu && menuIcon) {
-    //     document.addEventListener("click", function(event) {
-    //         if (!menu.contains(event.target) && event.target !== menuIcon) {
-    //             menu.style.display = "none";
-    //         }
-    //     })
-    // }
 
     const checkbox = document.getElementById("cbChangePassword");
     const passwordFields = document.querySelectorAll("#profile-newPassword, #profile-confirmedPassword");

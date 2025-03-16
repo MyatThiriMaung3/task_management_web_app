@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width:device-width, initial-scale=1.0">
+        <title>Task Edit</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="/css/styles.css">
+    </head>
+
+    <body>
+
+        <div class="form-wrapper">
+            <div class="form-container">
+                <h3 class="text-center mb-4 primary-text heading-text">Edit Task</h3>
+
+                <form action="/update-task/<%= task.task_id %>" method="post">
+                    <div class="mb-3">
+                        <label for="task-title" class="form-label primary-text">Task Title</label>
+                        <input type="text" class="form-control primary-text black-text" name="task_title" value="<%= task.task_title %>" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="task-description" class="form-label primary-text">Task Description</label>
+                        <input type="text" class="form-control primary-text black-text" name="task_description" value="<%= task.task_description %>" required>
+                    </div>
+
+                    <div class="input-group padding-top-20 padding-bottom-20">
+                        <select name="task_status" class="primary-text black-text form-select" required>
+                            <option value="default" <%= task.task_status === 'default' ? 'selected' : '' %>>Default Task</option>
+                            <option value="on-going" <%= task.task_status === 'on-going' ? 'selected' : '' %>>On-going Task</option>
+                            <option value="finished" <%= task.task_status === 'finished' ? 'selected' : '' %>>Finished Task</option>
+                        </select>
+                    </div>
+
+
+                    <div class="row-container space-between margin-bottom-20 margin-top-20 padding-20">
+                        <label class="primary-text black-text">
+                            <input class="custom-checkbox" type="radio" name="task_priority" value="default" <%= task.task_priority === 'default' ? 'checked' : '' %> required> Easy-Pie
+                        </label>
+                        <label class="primary-text black-text">
+                            <input class="custom-checkbox" type="radio" name="task_priority" value="medium" <%= task.task_priority === 'medium' ? 'checked' : '' %> required> Focus
+                        </label>
+                        <label class="primary-text black-text">
+                            <input class="custom-checkbox" type="radio" name="task_priority" value="high" <%= task.task_priority === 'high' ? 'checked' : '' %> required> Important
+                        </label>
+                    </div>
+                    
+
+                    <button type="submit" class="primary-text white-text btn btn-primary w-100">Save Changes</button>
+
+                </form>
+            </div>
+        </div>
+
+        <script src="/js/script.js"></script>
+    </body>
+</html>

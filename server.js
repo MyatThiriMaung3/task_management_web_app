@@ -283,6 +283,60 @@ app.get("/analysis", isAuthenticated, (req, res) => {
     res.render("analysis", {activePage: "analysis"})
 })
 
+app.get("/task-edit/:taskId", isAuthenticated, (req, res) => {
+    const taskId = req.params.taskId
+    const username = req.session.loggedInUser.username
+
+    db.query("SELECT * FROM tasks WHERE task_id = ?", [taskId], (err, results) => {
+        if (err) {
+            console.log(err)
+            return res.status(500).json({ error: "Database error "})
+        }
+
+        if (results.length === 0) return res.status(404).json({error: "Task not found"})
+
+        res.render("task-edit", { task: results[0] })
+    })
+})
+
+app.post("/update-task/:taskId", isAuthenticated, (req, res) => {
+    const taskId = req.params.taskId
+    const { task_title, task_description, task_status, task_priority } = req.body
+
+    db.query("UPDATE tasks SET task_title = ?, task_description = ?, task_status = ?, task_priority = ? WHERE task_id = ?", 
+        [task_title, task_description, task_status, task_priority, taskId],
+        (err, results) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({ error : "Database error"})
+            }
+
+            res.redirect("/dashboard")
+        }
+    )
+})
+
+app.post("/create-task", isAuthenticated, (req, res) => {
+    const { task_title, task_description, task_priority } = req.body
+    const username = req.session.loggedInUser.username
+
+    db.query("INSERT INTO tasks (task_title, task_description, task_status, task_priority, username) VALUES (?, ?, ?, ?, ?)",
+        [task_title, task_description, `default`, task_priority, username],
+        (err, results) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({ error: "Database error "})
+            }
+
+            res.redirect("/dashboard")
+        }
+    )
+})
+
+app.get("/task-create", isAuthenticated, (req, res) => {
+    res.render("task-create")
+})
+
 app.get("/search-result", isAuthenticated, (req, res) => {
     const query = req.query.query
     const username = req.session.loggedInUser.username

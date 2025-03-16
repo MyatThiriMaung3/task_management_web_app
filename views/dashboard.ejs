@@ -18,20 +18,8 @@
 
             <%- include("partials/_searchbar") %>
 
-            <div class="row-container space-between padding-bottom-20 padding-top-20">
+            <div class="padding-bottom-20 padding-top-20">
                 <p class="primary-text heading-text width-100">Board</p>
-
-                <p class="primary-text black-text width-auto">This Week</p>
-
-                <div class="menu-container">
-                    <i class="fas fa-angle-down ic-menu-size" onclick="toggleMenu('periodMenuDropdownDefault')"></i>
-                    <ul class="menu-dropdown" id="periodMenuDropdownDefault">
-                        <li><a class="primary-small-text black-text" href="#">Today</a></li>
-                        <li><a class="primary-small-text black-text" href="#">This Week</a></li>
-                        <li><a class="primary-small-text black-text" href="#">This Month</a></li>
-                        <li><a class="primary-small-text black-text" href="#">This Year</a></li>
-                    </ul>
-                </div>
             </div>
 
             <div class="row-container align-item-top width-100 height-100 space-between height-100">
@@ -39,15 +27,13 @@
                     <div class="row-container space-between <%= taskDefault.length === 0 && taskOngoing.length === 0 && taskFinished.length === 0 ? 'min-height-70' : '' %>">
                         <p class="primary-text black-text width-100">To do</p>
                         
-                        <i class="fas fa-plus ic-menu-size"></i>
+                        <a class="black-color" href="/task-create">
+                            <i class="fas fa-plus ic-menu-size"></i>
+                        </a>
+
                         <p class="primary-small-text black-text">Recently Added</p>
                         <div class="menu-container">
-                            <i class="fas fa-sort-amount-down ic-menu-size" onclick="toggleMenu('sortMenuDropdownDefault')"></i>
-                            <ul class="menu-dropdown" id="sortMenuDropdownDefault">
-                                <li><a class="primary-small-text black-text" href="#">by Recently Added</a></li>
-                                <li><a class="primary-small-text black-text" href="#">by Priority L-H</a></li>
-                                <li><a class="primary-small-text black-text" href="#">by Priority H-L</a></li>
-                            </ul>
+                            <i class="fas fa-sort-amount-down ic-menu-size"></i>
                         </div>
                     </div>
                     
@@ -56,12 +42,12 @@
                             <div class="row-container space-between">
                                 <div class="row-container">
                                     <i class="fas fa-circle 
-                                        <%= task.task_priority === 'low' ? 'green-icon' : 
+                                        <%= task.task_priority === 'default' ? 'green-icon' : 
                                             task.task_priority === 'medium' ? 'blue-icon' : 'red-icon' %> 
                                         tag-size">
                                     </i>
                                     <p class="primary-small-text black-text">
-                                        <%= task.task_priority === 'low' ? 'Easy-Pie' : 
+                                        <%= task.task_priority === 'default' ? 'Easy-Pie' : 
                                             task.task_priority === 'medium' ? 'Focus' : 'Important' %>
                                     </p>
                                 </div>
@@ -69,9 +55,8 @@
                                 <div class="menu-container">
                                     <i class="fas fa-ellipsis-h ic-menu-size" onclick="toggleMenu('menuDropdown-<%= task.task_id %>')"></i>
                                     <ul class="menu-dropdown" id="menuDropdown-<%= task.task_id %>">
-                                        <li><a class="primary-small-text black-text" href="#">Edit</a></li>
+                                        <li><a class="primary-small-text black-text" href="/task-edit/<%= task.task_id %>">Edit</a></li>
                                         <li><a class="primary-small-text black-text" href="#">Delete</a></li>
-                                        <li><a class="primary-small-text black-text" href="#">Share</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -97,12 +82,8 @@
                         
                         <p class="primary-small-text black-text">Recently Added</p>
                         <div class="menu-container">
-                            <i class="fas fa-sort-amount-down ic-menu-size" onclick="toggleMenu('sortMenuDropdownStarted')"></i>
-                            <ul class="menu-dropdown" id="sortMenuDropdownStarted">
-                                <li><a class="primary-small-text black-text" href="#">by Recently Added</a></li>
-                                <li><a class="primary-small-text black-text" href="#">by Priority L-H</a></li>
-                                <li><a class="primary-small-text black-text" href="#">by Priority H-L</a></li>
-                            </ul>
+                            <i class="fas fa-sort-amount-down ic-menu-size"></i>
+                            
                         </div>
 
                     </div>
@@ -112,12 +93,12 @@
                             <div class="row-container space-between">
                                 <div class="row-container">
                                     <i class="fas fa-circle 
-                                        <%= task.task_priority === 'low' ? 'green-icon' : 
+                                        <%= task.task_priority === 'default' ? 'green-icon' : 
                                             task.task_priority === 'medium' ? 'blue-icon' : 'red-icon' %> 
                                         tag-size">
                                     </i>
                                     <p class="primary-small-text black-text">
-                                        <%= task.task_priority === 'low' ? 'Easy-Pie' : 
+                                        <%= task.task_priority === 'default' ? 'Easy-Pie' : 
                                             task.task_priority === 'medium' ? 'Focus' : 'Important' %>
                                     </p>
                                 </div>
@@ -125,9 +106,8 @@
                                 <div class="menu-container">
                                     <i class="fas fa-ellipsis-h ic-menu-size" onclick="toggleMenu('menuDropdown-<%= task.task_id %>')"></i>
                                     <ul class="menu-dropdown" id="menuDropdown-<%= task.task_id %>">
-                                        <li><a class="primary-small-text black-text" href="#">Edit</a></li>
+                                        <li><a class="primary-small-text black-text" href="/task-edit/<%= task.task_id %>">Edit</a></li>
                                         <li><a class="primary-small-text black-text" href="#">Delete</a></li>
-                                        <li><a class="primary-small-text black-text" href="#">Share</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -153,12 +133,7 @@
                         
                         <p class="primary-small-text black-text">Recently Added</p>
                         <div class="menu-container">
-                            <i class="fas fa-sort-amount-down ic-menu-size" onclick="toggleMenu('sortMenuDropdownFinished')"></i>
-                            <ul class="menu-dropdown" id="sortMenuDropdownFinished">
-                                <li><a class="primary-small-text black-text" href="#">by Recently Added</a></li>
-                                <li><a class="primary-small-text black-text" href="#">by Priority L-H</a></li>
-                                <li><a class="primary-small-text black-text" href="#">by Priority H-L</a></li>
-                            </ul>
+                            <i class="fas fa-sort-amount-down ic-menu-size"></i>
                         </div>
 
                     </div>
@@ -168,12 +143,12 @@
                             <div class="row-container space-between">
                                 <div class="row-container">
                                     <i class="fas fa-circle 
-                                        <%= task.task_priority === 'low' ? 'green-icon' : 
+                                        <%= task.task_priority === 'default' ? 'green-icon' : 
                                             task.task_priority === 'medium' ? 'blue-icon' : 'red-icon' %> 
                                         tag-size">
                                     </i>
                                     <p class="primary-small-text black-text">
-                                        <%= task.task_priority === 'low' ? 'Easy-Pie' : 
+                                        <%= task.task_priority === 'default' ? 'Easy-Pie' : 
                                             task.task_priority === 'medium' ? 'Focus' : 'Important' %>
                                     </p>
                                 </div>
@@ -181,9 +156,8 @@
                                 <div class="menu-container">
                                     <i class="fas fa-ellipsis-h ic-menu-size" onclick="toggleMenu('menuDropdown-<%= task.task_id %>')"></i>
                                     <ul class="menu-dropdown" id="menuDropdown-<%= task.task_id %>">
-                                        <li><a class="primary-small-text black-text" href="#">Edit</a></li>
+                                        <li><a class="primary-small-text black-text" href="/task-edit/<%= task.task_id %>">Edit</a></li>
                                         <li><a class="primary-small-text black-text" href="#">Delete</a></li>
-                                        <li><a class="primary-small-text black-text" href="#">Share</a></li>
                                     </ul>
                                 </div>
                             </div>

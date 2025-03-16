@@ -158,6 +158,21 @@ app.post("/update-user", isAuthenticated, (req, res) => {
 
 })
 
+app.post("/update-task-status", isAuthenticated, (req, res) => {
+    const { taskId, newStatus } = req.body
+    const username = req.session.loggedInUser.username
+
+    const query = "UPDATE tasks SET task_status = ? WHERE username = ? AND task_id = ?"
+    db.query(query, [newStatus, username, taskId], (err, results) => {
+        if (err) {
+            console.log(err)
+            return res.status(500).json({ success: false, message: "Database connection failed"})
+        }
+
+        res.json({ success: true, message: "Task status updated successfully"})
+    })
+})
+
 app.get("/dashboard", isAuthenticated, (req, res) => {
     const username = req.session.loggedInUser.username
 
@@ -269,7 +284,23 @@ app.get("/analysis", isAuthenticated, (req, res) => {
 })
 
 app.get("/search-result", isAuthenticated, (req, res) => {
-    res.render("search-result")
+    const query = req.query.query
+    const username = req.session.loggedInUser.username
+
+    if (!query) {
+        return res.render("search-result", { tasks: []})
+    }
+
+    const searchQuery = `SELECT * FROM tasks WHERE username = ? AND (task_title LIKE ? OR task_description LIKE ?) ORDER BY created_at DESC`
+
+    db.query(searchQuery, [username, `%${query}%`, `%${query}%`], (err, results) => {
+        if (err) {
+            console.log(err)
+            return res.status(500).json({ error: "Database Connection Error"})
+        }
+
+        res.render("search-result", { tasks: results })
+    })
 })
 
 app.get("/logout", (req, res) => {

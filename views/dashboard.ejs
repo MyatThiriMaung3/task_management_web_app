@@ -35,7 +35,7 @@
             </div>
 
             <div class="row-container align-item-top width-100 height-100 space-between height-100">
-                <div class="height-auto tasks-container">
+                <div id="taskDefaultContainer" class="height-auto tasks-container">
                     <div class="row-container space-between <%= taskDefault.length === 0 && taskOngoing.length === 0 && taskFinished.length === 0 ? 'min-height-70' : '' %>">
                         <p class="primary-text black-text width-100">To do</p>
                         
@@ -52,10 +52,9 @@
                     </div>
                     
                     <% taskDefault.forEach(task => { %>
-                        <div class="column-container card-container">
+                        <div class="column-container card-container" id="task-<%= task.task_id %>" onclick="showTaskDetails(event, this)">
                             <div class="row-container space-between">
                                 <div class="row-container">
-                                    <!-- Dynamic Priority Icon -->
                                     <i class="fas fa-circle 
                                         <%= task.task_priority === 'low' ? 'green-icon' : 
                                             task.task_priority === 'medium' ? 'blue-icon' : 'red-icon' %> 
@@ -67,7 +66,6 @@
                                     </p>
                                 </div>
                     
-                                <!-- Unique Menu Dropdown -->
                                 <div class="menu-container">
                                     <i class="fas fa-ellipsis-h ic-menu-size" onclick="toggleMenu('menuDropdown-<%= task.task_id %>')"></i>
                                     <ul class="menu-dropdown" id="menuDropdown-<%= task.task_id %>">
@@ -78,15 +76,13 @@
                                 </div>
                             </div>
                     
-                            <!-- Task Title & Description -->
                             <h4 class="primary-text black-text task-title-text"><%= task.task_title %></h4>
                             <p class="primary-text black-text"><%= task.task_description %></p>
                     
-                            <!-- Task Status Handling -->
                             <% if (task.task_status === 'default') { %>
-                                <button type="button" class="primary-small-text start-task-box">Start Task</button>
+                                <button type="button" class="primary-small-text start-task-box" onclick="updateTaskStatus('<%= task.task_id %>', 'on-going')">Start Task</button>
                             <% } else if (task.task_status === 'on-going') { %>
-                                <button type="button" class="primary-small-text finish-task-box">Finish Task</button>
+                                <button type="button" class="primary-small-text finish-task-box" onclick="updateTaskStatus('<%= task.task_id %>', 'finished')">Finish Task</button>
                             <% } %>
                         </div>
                     <% }) %>
@@ -95,7 +91,7 @@
                 </div>
     
     
-                <div class="height-auto tasks-container">
+                <div id="taskOngoingContainer" class="height-auto tasks-container">
                     <div class="row-container space-between <%= taskDefault.length === 0 && taskOngoing.length === 0 && taskFinished.length === 0 ? 'min-height-70' : '' %>">
                         <p class="primary-text black-text width-100">In Progress</p>
                         
@@ -112,10 +108,9 @@
                     </div>
                     
                     <% taskOngoing.forEach(task => { %>
-                        <div class="column-container card-container">
+                        <div class="column-container card-container" id="task-<%= task.task_id %>" onclick="showTaskDetails(event, this)">
                             <div class="row-container space-between">
                                 <div class="row-container">
-                                    <!-- Dynamic Priority Icon -->
                                     <i class="fas fa-circle 
                                         <%= task.task_priority === 'low' ? 'green-icon' : 
                                             task.task_priority === 'medium' ? 'blue-icon' : 'red-icon' %> 
@@ -127,7 +122,6 @@
                                     </p>
                                 </div>
                     
-                                <!-- Unique Menu Dropdown -->
                                 <div class="menu-container">
                                     <i class="fas fa-ellipsis-h ic-menu-size" onclick="toggleMenu('menuDropdown-<%= task.task_id %>')"></i>
                                     <ul class="menu-dropdown" id="menuDropdown-<%= task.task_id %>">
@@ -138,15 +132,13 @@
                                 </div>
                             </div>
                     
-                            <!-- Task Title & Description -->
                             <h4 class="primary-text black-text task-title-text"><%= task.task_title %></h4>
                             <p class="primary-text black-text"><%= task.task_description %></p>
                     
-                            <!-- Task Status Handling -->
                             <% if (task.task_status === 'default') { %>
-                                <button type="button" class="primary-small-text start-task-box">Start Task</button>
+                                <button type="button" class="primary-small-text start-task-box" onclick="updateTaskStatus('<%= task.task_id %>', 'on-going')">Start Task</button>
                             <% } else if (task.task_status === 'on-going') { %>
-                                <button type="button" class="primary-small-text finish-task-box">Finish Task</button>
+                                <button type="button" class="primary-small-text finish-task-box" onclick="updateTaskStatus('<%= task.task_id %>', 'finished')">Finish Task</button>
                             <% } %>
                         </div>
                     <% }) %>
@@ -155,7 +147,7 @@
                 </div>
     
     
-                <div class="height-auto tasks-container">
+                <div id="taskFinishedContainer" class="height-auto tasks-container">
                     <div class="row-container space-between <%= taskDefault.length === 0 && taskOngoing.length === 0 && taskFinished.length === 0 ? 'min-height-70' : '' %>">
                         <p class="primary-text black-text width-100">Done</p>
                         
@@ -172,10 +164,9 @@
                     </div>
                     
                     <% taskFinished.forEach(task => { %>
-                        <div class="column-container card-container">
+                        <div class="column-container card-container" id="task-<%= task.task_id %>" onclick="showTaskDetails(event, this)">
                             <div class="row-container space-between">
                                 <div class="row-container">
-                                    <!-- Dynamic Priority Icon -->
                                     <i class="fas fa-circle 
                                         <%= task.task_priority === 'low' ? 'green-icon' : 
                                             task.task_priority === 'medium' ? 'blue-icon' : 'red-icon' %> 
@@ -187,7 +178,6 @@
                                     </p>
                                 </div>
                     
-                                <!-- Unique Menu Dropdown -->
                                 <div class="menu-container">
                                     <i class="fas fa-ellipsis-h ic-menu-size" onclick="toggleMenu('menuDropdown-<%= task.task_id %>')"></i>
                                     <ul class="menu-dropdown" id="menuDropdown-<%= task.task_id %>">
@@ -198,15 +188,13 @@
                                 </div>
                             </div>
                     
-                            <!-- Task Title & Description -->
                             <h4 class="primary-text black-text task-title-text"><%= task.task_title %></h4>
                             <p class="primary-text black-text"><%= task.task_description %></p>
                     
-                            <!-- Task Status Handling -->
                             <% if (task.task_status === 'default') { %>
-                                <button type="button" class="primary-small-text start-task-box">Start Task</button>
+                                <button type="button" class="primary-small-text start-task-box" onclick="updateTaskStatus('<%= task.task_id %>', 'on-going')">Start Task</button>
                             <% } else if (task.task_status === 'on-going') { %>
-                                <button type="button" class="primary-small-text finish-task-box">Finish Task</button>
+                                <button type="button" class="primary-small-text finish-task-box" onclick="updateTaskStatus('<%= task.task_id %>', 'finished')">Finish Task</button>
                             <% } %>
                         </div>
                     <% }) %>
@@ -216,8 +204,12 @@
         </div>
         
         
-
-        
+        <div id="taskDetailsPopup" class="popup-overlay">
+            <div class="popup-content">
+                <span class="close-btn" onclick="closePopup('taskDetailsPopup')">&times;</span>
+                <div id="popupTaskContainer"></div>
+            </div>
+        </div>
         
 
         <script src="/js/script.js"></script>

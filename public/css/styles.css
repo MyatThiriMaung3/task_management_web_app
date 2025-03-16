@@ -441,7 +441,6 @@ a {
     height: 100%;
     background: rgba(0, 0, 0, 0.7); /* Dark semi-transparent background */
     backdrop-filter: blur(5px); /* Blurred effect */
-    display: flex;
     align-items: center;
     justify-content: center;
 }
@@ -476,6 +475,7 @@ a {
     background: white;
     padding: 5px 10px;
     border-radius: 50%;
+    z-index: 1000;
 }
 .close-btn:hover {
     background: #f0f0f0;

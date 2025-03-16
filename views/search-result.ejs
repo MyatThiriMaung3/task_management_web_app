@@ -10,105 +10,54 @@
 
     <body>
 
+        
+
         <div class="column-container search-result-overflow">
 
-            <button class="primary-text white-text btn-primary width-auto margin-top-20 margin-bottom-20 back-btn" onclick="goToDashboard()">Back</button>
+            <div class="margin-top-20 margin-bottom-20">
+                <%- include("partials/_searchbar") %>
+            </div>
+            
+
+            <button class="primary-text white-text btn-primary width-auto back-btn margin-top-20 margin-bottom-20" onclick="goToDashboard()">Back</button>
         
             <div class="column-container search-result-container main-content">
-                <div class="column-container card-container">
-                    <div class="row-container space-between">
-                        <div class="row-container">
-                            <i class="fas fa-circle red-icon tag-size"></i>
-                            <p class="primary-small-text black-text">Important</p>
+                
+                <% tasks.forEach(task => { %>
+                    <div class="column-container card-container" id="task-<%= task.task_id %>" onclick="showTaskDetails(this)">
+                        <div class="row-container space-between">
+                            <div class="row-container">
+                                <i class="fas fa-circle 
+                                    <%= task.task_priority === 'low' ? 'green-icon' : 
+                                        task.task_priority === 'medium' ? 'blue-icon' : 'red-icon' %> 
+                                    tag-size">
+                                </i>
+                                <p class="primary-small-text black-text">
+                                    <%= task.task_priority === 'low' ? 'Easy-Pie' : 
+                                        task.task_priority === 'medium' ? 'Focus' : 'Important' %>
+                                </p>
+                            </div>
+                
+                            <div class="menu-container">
+                                <i class="fas fa-ellipsis-h ic-menu-size" onclick="toggleMenu('menuDropdown-<%= task.task_id %>')"></i>
+                                <ul class="menu-dropdown" id="menuDropdown-<%= task.task_id %>">
+                                    <li><a class="primary-small-text black-text" href="#">Edit</a></li>
+                                    <li><a class="primary-small-text black-text" href="#">Delete</a></li>
+                                    <li><a class="primary-small-text black-text" href="#">Share</a></li>
+                                </ul>
+                            </div>
                         </div>
-        
-                        <div class="menu-container">
-                            <i class="fas fa-ellipsis-h ic-menu-size" onclick="toggleMenu('menuDropdown')"></i>
-                            <ul class="menu-dropdown" id="menuDropdown">
-                                <li><a class="primary-small-text black-text" href="#">Edit</a></li>
-                                <li><a class="primary-small-text black-text" href="#">Delete</a></li>
-                                <li><a class="primary-small-text black-text" href="#">Share</a></li>
-                            </ul>
-                        </div>
-                    
+                
+                        <h4 class="primary-text black-text task-title-text"><%= task.task_title %></h4>
+                        <p class="primary-text black-text"><%= task.task_description %></p>
+                
+                        <% if (task.task_status === 'default') { %>
+                            <button type="button" class="primary-small-text start-task-box" disabled onclick="updateTaskStatus('<%= task.task_id %>', 'on-going')">Start Task</button>
+                        <% } else if (task.task_status === 'on-going') { %>
+                            <button type="button" class="primary-small-text finish-task-box" disabled onclick="updateTaskStatus('<%= task.task_id %>', 'finished')">Finish Task</button>
+                        <% } %>
                     </div>
-        
-                    <h4 class="primary-text black-text task-title-text">Task Title</h4>
-                    <p class="primary-text black-text">Task body, where the description of the task will be written. The task will have colored mark which will represent the priority of the respective task.</p>
-        
-                    <button type="button" class="primary-small-text start-task-box">Start Task</button>
-                </div>
-
-                <div class="column-container card-container">
-                    <div class="row-container space-between">
-                        <div class="row-container">
-                            <i class="fas fa-circle red-icon tag-size"></i>
-                            <p class="primary-small-text black-text">Important</p>
-                        </div>
-        
-                        <div class="menu-container">
-                            <i class="fas fa-ellipsis-h ic-menu-size" onclick="toggleMenu('menuDropdown')"></i>
-                            <ul class="menu-dropdown" id="menuDropdown">
-                                <li><a class="primary-small-text black-text" href="#">Edit</a></li>
-                                <li><a class="primary-small-text black-text" href="#">Delete</a></li>
-                                <li><a class="primary-small-text black-text" href="#">Share</a></li>
-                            </ul>
-                        </div>
-                    
-                    </div>
-        
-                    <h4 class="primary-text black-text task-title-text">Task Title</h4>
-                    <p class="primary-text black-text">Task body, where the description of the task will be written. The task will have colored mark which will represent the priority of the respective task.</p>
-        
-                </div>
-
-                <div class="column-container card-container">
-                    <div class="row-container space-between">
-                        <div class="row-container">
-                            <i class="fas fa-circle red-icon tag-size"></i>
-                            <p class="primary-small-text black-text">Important</p>
-                        </div>
-        
-                        <div class="menu-container">
-                            <i class="fas fa-ellipsis-h ic-menu-size" onclick="toggleMenu('menuDropdown')"></i>
-                            <ul class="menu-dropdown" id="menuDropdown">
-                                <li><a class="primary-small-text black-text" href="#">Edit</a></li>
-                                <li><a class="primary-small-text black-text" href="#">Delete</a></li>
-                                <li><a class="primary-small-text black-text" href="#">Share</a></li>
-                            </ul>
-                        </div>
-                    
-                    </div>
-        
-                    <h4 class="primary-text black-text task-title-text">Task Title</h4>
-                    <p class="primary-text black-text">Task body, where the description of the task will be written. The task will have colored mark which will represent the priority of the respective task.</p>
-        
-                    <button type="button" class="primary-small-text finish-task-box">Finish Task</button>
-                </div>
-
-                <div class="column-container card-container">
-                    <div class="row-container space-between">
-                        <div class="row-container">
-                            <i class="fas fa-circle red-icon tag-size"></i>
-                            <p class="primary-small-text black-text">Important</p>
-                        </div>
-        
-                        <div class="menu-container">
-                            <i class="fas fa-ellipsis-h ic-menu-size" onclick="toggleMenu('menuDropdown')"></i>
-                            <ul class="menu-dropdown" id="menuDropdown">
-                                <li><a class="primary-small-text black-text" href="#">Edit</a></li>
-                                <li><a class="primary-small-text black-text" href="#">Delete</a></li>
-                                <li><a class="primary-small-text black-text" href="#">Share</a></li>
-                            </ul>
-                        </div>
-                    
-                    </div>
-        
-                    <h4 class="primary-text black-text task-title-text">Task Title</h4>
-                    <p class="primary-text black-text">Task body, where the description of the task will be written. The task will have colored mark which will represent the priority of the respective task.</p>
-        
-                    <button type="button" class="primary-small-text start-task-box">Start Task</button>
-                </div>
+                <% }) %>
 
             </div>
 

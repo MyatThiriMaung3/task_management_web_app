@@ -1,4 +1,6 @@
 
+
+
 function toggleMenu(menuId) {
     const menu = document.getElementById(menuId);
     menu.style.display = (menu.style.display === "block") ? "none" : "block";
@@ -8,6 +10,31 @@ function goToDashboard() {
     window.location.href = "/dashboard";
 }
 
+function showTaskDetails(event, taskElement) {
+    if (event.target.tagName === "BUTTON") {
+        return
+    }
+    console.log("show task details has been called")
+
+    const popupContainer = document.getElementById("popupTaskContainer")
+    const popupOverlay = document.getElementById("taskDetailsPopup")
+    
+    popupContainer.innerHTML = ""
+
+    const clonedTask = taskElement.cloneNode(true)
+    popupContainer.appendChild(clonedTask)
+
+    popupOverlay.style.display = "flex"
+}
+
+// function closeTaskDetailsPopup() {
+//     const popupContainer = document.getElementById("popupTaskContainer")
+//     const popOverlay = document.getElementById("taskDetailsPopup")
+
+//     if(originalTaskElement) {
+//         originalTaskElement.appendChild(popupContainer.firstElementChild)
+//     }
+// }
 
 function openImagePopup() {
     const profileImage = document.querySelector(".profile-image-size").src;
@@ -23,8 +50,72 @@ function closePopup(tempPopup) {
     document.getElementById(tempPopup).style.display = "none";
 }
 
+function updateTaskStatus(task_id, newStatus) {
+    const taskId = Number(task_id)
+
+    fetch("/update-task-status", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ 
+            taskId, 
+            newStatus 
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            moveTaskInUI(taskId, newStatus)
+        } else {
+            alert("Failed to update task status")
+        }
+    })
+    .catch(error => console.error("Error updating task: ", error))
+}
+
+
+function moveTaskInUI(taskId, newStatus) {
+    const taskElement = document.getElementById(`task-${taskId}`)
+
+    if (!taskElement) return;
+
+    taskElement.remove();
+
+    if (newStatus === 'on-going') {
+        const button = taskElement.querySelector("button")
+        button.textContent = "Finish Task"
+        button.className = "primary-small-text finish-task-box"
+        button.setAttribute("onclick", `updateTaskStatus('${taskId}', 'finished')`)
+        document.getElementById("taskOngoingContainer").appendChild(taskElement)
+    } else if (newStatus === 'finished') {
+        taskElement.querySelector("button").remove()
+        document.getElementById("taskFinishedContainer").appendChild(taskElement)
+    }
+}
+
+function performSearch(searchInput) {
+    const query = searchInput.value.trim()
+    if (query.length === 0) return
+    
+    window.location.href = `/search-result?query=${encodeURIComponent(query)}`
+
+}
 
 document.addEventListener("DOMContentLoaded", function () {
+    
+
+
+    console.log("DOM is fully loaded!");
+
+    const searchInput = document.getElementById("search-input")
+
+    if (searchInput) {
+        searchInput.addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
+                performSearch(searchInput)
+            }
+        })
+    }
+
     // const menu = document.getElementById("menuDropdown");
     // const menuIcon = document.querySelector(".ic-menu-size");
 
@@ -35,8 +126,6 @@ document.addEventListener("DOMContentLoaded", function () {
     //         }
     //     })
     // }
-
-    console.log("DOM is fully loaded!");
 
     const checkbox = document.getElementById("cbChangePassword");
     const passwordFields = document.querySelectorAll("#profile-newPassword, #profile-confirmedPassword");

@@ -1,6 +1,4 @@
 
-
-
 function toggleMenu(menuId) {
     const menu = document.getElementById(menuId);
     menu.style.display = (menu.style.display === "block") ? "none" : "block";
@@ -25,6 +23,30 @@ function showTaskDetails(event, taskElement) {
     popupContainer.appendChild(clonedTask)
 
     popupOverlay.style.display = "flex"
+}
+
+function confirmDelete(taskId) {
+    const confirmation = confirm("Are you sure to delete this task?")
+
+    if (confirmation) {
+        deleteTask(taskId)
+    }
+}
+
+function deleteTask(taskId) {
+    fetch(`/delete-task/${taskId}`, {
+        method: "DELETE"
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById(`task-${taskId}`).remove()
+            showToast("Task deleted successfully", true)
+        } else {
+            showToast("Failed to delete task", false)
+        }
+    })
+    .catch(error => console.error("Error deleting task: ", error))
 }
 
 function openImagePopup() {
@@ -63,7 +85,6 @@ function updateTaskStatus(task_id, newStatus) {
     .catch(error => console.error("Error updating task: ", error))
 }
 
-
 function moveTaskInUI(taskId, newStatus) {
     const taskElement = document.getElementById(`task-${taskId}`)
 
@@ -91,33 +112,94 @@ function performSearch(searchInput) {
 
 }
 
-document.addEventListener("DOMContentLoaded", function (event) {
+function initializeAnalysisCharts() {
+    const lineCtx = document.getElementById('taskAnalysisLineChart');
     
-
-
-    console.log("DOM is fully loaded!");
-
-    const searchInput = document.getElementById("search-input")
-
-    if (searchInput) {
-        searchInput.addEventListener("keypress", function (event) {
-            if (event.key === "Enter") {
-                performSearch(searchInput)
-            }
-        })
+    if (!lineCtx) {
+        console.error("TaskAnalysisLineChart canvas not found!");
+        return;
     }
+    
+    new Chart(lineCtx.getContext("2d"), {
+        type: 'line',
+        data: {
+            labels: ["Jan", "Feb", "Mar", "Apr", "May"],  // Static months
+            datasets: [
+                {
+                    label: "Default Tasks",
+                    data: [10, 15, 5, 20, 25],  // Static values
+                    borderColor: "#F8B195"
+                },
+                {
+                    label: "Ongoing Tasks",
+                    data: [8, 12, 18, 10, 5],
+                    borderColor: "#89CFF0"
+                    
+                },
+                {
+                    label: "Finished Tasks",
+                    data: [3, 7, 12, 18, 30],
+                    borderColor: "#A8D5BA"
+                        
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'top' }
+            }
+        }
+    });
+    
+    console.log("Line Chart successfully created!");
 
+    const pieCtx = document.getElementById('taskAnalysisPieChart');
+    
+    if (!pieCtx) {
+        console.error("TaskAnalysisPieChart canvas not found!");
+        return;
+    }
+    
+    new Chart(pieCtx.getContext("2d"), {
+        type: 'doughnut',
+        data: {
+            labels: ["Default", "Ongoing", "Finished"],
+            datasets: [{
+                data: [15, 30, 55],  // Static values
+                backgroundColor: ["#F7D488", "#F4C2C2", "#89CFF0"],
+                borderColor: ["#F1C27B", "#E8A4A4", "#72B6E8"],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom' }
+            }
+        }
+    });
+    
+    console.log("Pie Chart successfully created!");
+}
+
+function checkboxUI() {
     const checkbox = document.getElementById("cbChangePassword");
     const passwordFields = document.querySelectorAll("#profile-newPassword, #profile-confirmedPassword");
 
     if (checkbox) {
         checkbox.addEventListener("change", function () {
+            console.log("🔄 Checkbox Changed:", checkbox.checked);
             passwordFields.forEach(field => {
                 field.disabled = !checkbox.checked; // Enable if checked, disable if not
             });
         });
     }
+}
 
+function saveChangesUserInfo() {
     const saveButton = document.getElementById("btnSaveChanges")
     if (saveButton) {
         saveButton.addEventListener('click', function() {
@@ -143,9 +225,40 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 showToast(data.message, data.success)
             })
             .catch (error => console.error(error))
-                })
+        })
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function (event) {
+    console.log("DOM is fully loaded!");
+
+    const currentPage = document.body.getAttribute("data-page");
+    console.log("Current Page:", currentPage);
+
+    if (currentPage === "analysis") {
+        initializeAnalysisCharts();
+    } 
+    
+    if (currentPage === "profile") {
+
+        checkboxUI()
+
+        saveChangesUserInfo()
+    }
+    
+
+    const searchInput = document.getElementById("search-input")
+
+    if (searchInput) {
+        searchInput.addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
+                performSearch(searchInput)
             }
+        })
+    }
+    
 });
+
 
 function generateUsername() {
     fetch("/generate-username")

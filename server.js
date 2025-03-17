@@ -8,6 +8,8 @@ const app = express()
 const cors = require('cors')
 const db = require('./db')
 const { resolve } = require('path/posix')
+const { rejects } = require('assert')
+const { finished } = require('stream')
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
@@ -279,9 +281,97 @@ app.get("/profile", isAuthenticated, (req, res) => {
     res.render("profile", {activePage: "profile"})
 })
 
-app.get("/analysis", isAuthenticated, (req, res) => {
-    res.render("analysis", {activePage: "analysis"})
+app.get("/chart", (req, res) => {
+    res.render("chart")
 })
+
+
+app.get("/analysis", isAuthenticated, (req, res) => {
+    const username = req.session.loggedInUser.username;
+
+    const queryTotal = "SELECT COUNT(*) AS total FROM tasks WHERE username = ?"
+    const queryTotalStatus = "SELECT COUNT(*) AS total FROM tasks WHERE username = ? AND task_status = ?";
+
+    Promise.all([
+        new Promise((resolve, reject) => {
+            db.query(queryTotal, [username], (err, results) => {
+                if (err) reject(err);
+                else resolve(results[0].total);
+            });
+        }),
+        new Promise((resolve, reject) => {
+            db.query(queryTotalStatus, [username, 'default'], (err, results) => {
+                if (err) reject(err);
+                else resolve(results[0].total);
+            });
+        }),
+        new Promise((resolve, reject) => {
+            db.query(queryTotalStatus, [username, 'on-going'], (err, results) => {
+                if (err) reject(err);
+                else resolve(results[0].total);
+            });
+        }),
+        new Promise((resolve, reject) => {
+            db.query(queryTotalStatus, [username, 'finished'], (err, results) => {
+                if (err) reject(err);
+                else resolve(results[0].total);
+            });
+        })
+    ])
+    .then(([totalTasks, defaultTasks, ongoingTasks, finishedTasks]) => {
+
+        res.render("analysis", {
+            activePage: "analysis", 
+            totalTasks,
+            defaultTasks,
+            ongoingTasks, 
+            finishedTasks
+        });
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({ error: "Database connection error" });
+    });
+});
+
+app.get("/api/analysis", isAuthenticated, (req, res) => {
+    const username = req.session.loggedInUser.username;
+
+    const queryTotalStatus = "SELECT COUNT(*) AS total FROM tasks WHERE username = ? AND task_status = ?";
+
+    Promise.all([
+        new Promise((resolve, reject) => {
+            db.query(queryTotalStatus, [username, 'default'], (err, results) => {
+                if (err) reject(err);
+                else resolve(results[0].total);
+            });
+        }),
+        new Promise((resolve, reject) => {
+            db.query(queryTotalStatus, [username, 'on-going'], (err, results) => {
+                if (err) reject(err);
+                else resolve(results[0].total);
+            });
+        }),
+        new Promise((resolve, reject) => {
+            db.query(queryTotalStatus, [username, 'finished'], (err, results) => {
+                if (err) reject(err);
+                else resolve(results[0].total);
+            });
+        })
+    ])
+    .then(([defaultTasks, ongoingTasks, finishedTasks]) => {
+
+        res.json({
+            defaultTasks,
+            ongoingTasks, 
+            finishedTasks
+        })
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({ error: "Database connection error" });
+    });
+});
 
 app.get("/task-edit/:taskId", isAuthenticated, (req, res) => {
     const taskId = req.params.taskId
@@ -331,6 +421,23 @@ app.post("/create-task", isAuthenticated, (req, res) => {
             res.redirect("/dashboard")
         }
     )
+})
+
+app.delete("/delete-task/:taskId", isAuthenticated, (req, res) => {
+    const taskId = req.params.taskId
+
+    db.query("DELETE FROM tasks WHERE task_id = ?", [taskId], (err, results) => {
+        if (err) {
+            console.log(err)
+            return res.status(500).json({ success: false, error : "Database Error"})
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ success: false, error: "Task not found"})
+        }
+
+        res.json({ success: true })
+    })
 })
 
 app.get("/task-create", isAuthenticated, (req, res) => {

@@ -50,7 +50,7 @@ function deleteTask(taskId) {
 }
 
 function openImagePopup() {
-    const profileImage = document.querySelector(".profile-image-size").src;
+    const profileImage = document.querySelector(".large-circle-image").src;
     document.querySelector("#imagePopup img").src = profileImage; // Set image dynamically
     document.getElementById("imagePopup").style.display = "flex";
 }
@@ -112,7 +112,7 @@ function performSearch(searchInput) {
 
 }
 
-function initializeAnalysisCharts() {
+function initializeAnalysisCharts(taskHistory, statusCounts) {
     const lineCtx = document.getElementById('taskAnalysisLineChart');
     
     if (!lineCtx) {
@@ -123,22 +123,22 @@ function initializeAnalysisCharts() {
     new Chart(lineCtx.getContext("2d"), {
         type: 'line',
         data: {
-            labels: ["Jan", "Feb", "Mar", "Apr", "May"],  // Static months
+            labels: taskHistory.map(task => task.task_date),
             datasets: [
                 {
                     label: "Default Tasks",
-                    data: [10, 15, 5, 20, 25],  // Static values
+                    data: taskHistory.map(task => task.default_count),
                     borderColor: "#F8B195"
                 },
                 {
                     label: "Ongoing Tasks",
-                    data: [8, 12, 18, 10, 5],
+                    data: taskHistory.map(task => task.ongoing_count),
                     borderColor: "#89CFF0"
                     
                 },
                 {
                     label: "Finished Tasks",
-                    data: [3, 7, 12, 18, 30],
+                    data: taskHistory.map(task => task.finished_count),
                     borderColor: "#A8D5BA"
                         
                 }
@@ -167,7 +167,7 @@ function initializeAnalysisCharts() {
         data: {
             labels: ["Default", "Ongoing", "Finished"],
             datasets: [{
-                data: [15, 30, 55],  // Static values
+                data: [statusCounts.default, statusCounts["on-going"], statusCounts.finished],
                 backgroundColor: ["#F7D488", "#F4C2C2", "#89CFF0"],
                 borderColor: ["#F1C27B", "#E8A4A4", "#72B6E8"],
                 borderWidth: 1
@@ -229,6 +229,29 @@ function saveChangesUserInfo() {
     }
 }
 
+function generateUsername() {
+    fetch("/generate-username")
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById("signup-username").value = data.username;
+    })
+    .catch(error => console.error("The error while filling generated username : ", error))
+}
+
+function showToast(message, isSuccess) {
+    const toast = document.getElementById("toast")
+    toast.textContent = message
+    toast.className = isSuccess ? "primary-text toast-appear toast-success " : "primary-text toast-appear toast-error"
+    document.body.appendChild(toast)
+
+    console.log("✅ Toast created:", toast);
+    console.log("✅ Toast created with class:", toast.className);
+
+    setTimeout(() => {
+        toast.className = "toast-hidden"
+    }, 2000)
+}
+
 document.addEventListener("DOMContentLoaded", function (event) {
     console.log("DOM is fully loaded!");
 
@@ -236,7 +259,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
     console.log("Current Page:", currentPage);
 
     if (currentPage === "analysis") {
-        initializeAnalysisCharts();
+        fetch("/api/analysis")
+        .then(response => response.json())
+        .then(data => {
+            console.log("📊 Fetched Data:", data);
+            initializeAnalysisCharts(data.taskHistory, data.statusCounts);
+        })
+        .catch(error => console.error("Error fetching data:", error));
     } 
     
     if (currentPage === "profile") {
@@ -258,23 +287,3 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
     
 });
-
-
-function generateUsername() {
-    fetch("/generate-username")
-    .then(response => response.json())
-    .then(data => {
-        document.getElementById("signup-username").value = data.username;
-    })
-    .catch(error => console.error("The error while filling generated username : ", error))
-}
-
-
-function showToast(message, isSuccess) {
-    const toast = document.createElement("div")
-    toast.textContent = message
-    toast.className = isSuccess ? "toast success" : "toast error"
-    document.body.appendChild(toast)
-
-    setTimeout(() => {toast.remove(); }, 2000)
-}

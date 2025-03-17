@@ -18,7 +18,7 @@
                 <h3 class="primary-text heading-text black-text">My Profile</h3>
     
                 <div class="row-container card-container width-auto space-between">
-                    <img class="circle-image profile-image-size" src="<%= loggedInUser.profile %>" alt="Profile Image" onclick="openImagePopup()">
+                    <img class="large-circle-image" src="<%= loggedInUser.profile %>" alt="Profile Image" onclick="openImagePopup()">
     
                     <p class="width-auto primary-text black-text"><%= loggedInUser.username || "YOU! CHEATER!!!" %></p>
     
@@ -78,6 +78,8 @@
                     <button id="btnSaveChanges" class="primary-text white-text btn-primary w-100">Save Changes</button>
                 </div>
             </div>
+
+            
         </div>
 
         <div id="imagePopup" class="popup-overlay">
@@ -86,6 +88,8 @@
                 <img alt="Full Profile Image" class="popup-image">
             </div>
         </div>
+
+        <div id="toast" class="primary-text toast-hidden">Something to tell to the user</div>
 
         <script src="/js/script.js"></script>
     </body>

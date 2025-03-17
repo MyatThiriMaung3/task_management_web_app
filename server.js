@@ -334,38 +334,93 @@ app.get("/analysis", isAuthenticated, (req, res) => {
     });
 });
 
+// app.get("/api/analysis", isAuthenticated, (req, res) => {
+//     const username = req.session.loggedInUser.username;
+
+//     const queryTotalStatus = "SELECT COUNT(*) AS total FROM tasks WHERE username = ? AND task_status = ?";
+
+//     Promise.all([
+//         new Promise((resolve, reject) => {
+//             db.query(queryTotalStatus, [username, 'default'], (err, results) => {
+//                 if (err) reject(err);
+//                 else resolve(results[0].total);
+//             });
+//         }),
+//         new Promise((resolve, reject) => {
+//             db.query(queryTotalStatus, [username, 'on-going'], (err, results) => {
+//                 if (err) reject(err);
+//                 else resolve(results[0].total);
+//             });
+//         }),
+//         new Promise((resolve, reject) => {
+//             db.query(queryTotalStatus, [username, 'finished'], (err, results) => {
+//                 if (err) reject(err);
+//                 else resolve(results[0].total);
+//             });
+//         })
+//     ])
+//     .then(([defaultTasks, ongoingTasks, finishedTasks]) => {
+
+//         res.json({
+//             defaultTasks,
+//             ongoingTasks, 
+//             finishedTasks
+//         })
+//     })
+//     .catch(err => {
+//         console.log(err);
+//         res.status(500).json({ error: "Database connection error" });
+//     });
+// });
+
 app.get("/api/analysis", isAuthenticated, (req, res) => {
     const username = req.session.loggedInUser.username;
 
-    const queryTotalStatus = "SELECT COUNT(*) AS total FROM tasks WHERE username = ? AND task_status = ?";
+    const queryTotal = "SELECT COUNT(*) AS total FROM tasks WHERE username = ?";
+    const queryStatus = "SELECT task_status, COUNT(*) AS count FROM tasks WHERE username = ? GROUP BY task_status";
+    const queryHistory = `
+        SELECT DATE(created_at) AS task_date,
+            SUM(task_status = 'default') AS default_count,
+            SUM(task_status = 'on-going') AS ongoing_count,
+            SUM(task_status = 'finished') AS finished_count
+        FROM tasks
+        WHERE username = ?
+        GROUP BY task_date
+        ORDER BY task_date ASC
+    `;
 
     Promise.all([
         new Promise((resolve, reject) => {
-            db.query(queryTotalStatus, [username, 'default'], (err, results) => {
+            db.query(queryTotal, [username], (err, results) => {
                 if (err) reject(err);
                 else resolve(results[0].total);
             });
         }),
         new Promise((resolve, reject) => {
-            db.query(queryTotalStatus, [username, 'on-going'], (err, results) => {
+            db.query(queryStatus, [username], (err, results) => {
                 if (err) reject(err);
-                else resolve(results[0].total);
+                else resolve(results);
             });
         }),
         new Promise((resolve, reject) => {
-            db.query(queryTotalStatus, [username, 'finished'], (err, results) => {
+            db.query(queryHistory, [username], (err, results) => {
                 if (err) reject(err);
-                else resolve(results[0].total);
+                else resolve(results);
             });
         })
     ])
-    .then(([defaultTasks, ongoingTasks, finishedTasks]) => {
+    .then(([totalTasks, taskCounts, taskHistory]) => {
+        let statusCounts = { default: 0, "on-going": 0, finished: 0 };
+
+        taskCounts.forEach(row => {
+            statusCounts[row.task_status] = row.count;
+        });
 
         res.json({
-            defaultTasks,
-            ongoingTasks, 
-            finishedTasks
-        })
+            totalTasks, 
+            statusCounts,
+            taskHistory
+        });
     })
     .catch(err => {
         console.log(err);

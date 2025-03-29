@@ -14,7 +14,7 @@
             <div class="form-container">
                 <h3 class="text-center mb-4 primary-text heading-text">Edit Task</h3>
 
-                <form action="/update-task/<%= task.task_id %>" method="post">
+                <form action="/tasks/update-task/<%= task.task_id %>" method="post">
                     <div class="mb-3">
                         <label for="task-title" class="form-label primary-text">Task Title</label>
                         <input type="text" class="form-control primary-text black-text" name="task_title" value="<%= task.task_title %>" required>

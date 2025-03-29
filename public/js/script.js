@@ -5,7 +5,7 @@ function toggleMenu(menuId) {
 }
 
 function goToDashboard() {
-    window.location.href = "/dashboard";
+    window.location.href = "/tasks/dashboard";
 }
 
 function showTaskDetails(event, taskElement) {
@@ -34,7 +34,7 @@ function confirmDelete(taskId) {
 }
 
 function deleteTask(taskId) {
-    fetch(`/delete-task/${taskId}`, {
+    fetch(`/tasks/delete-task/${taskId}`, {
         method: "DELETE"
     })
     .then(response => response.json())
@@ -66,7 +66,7 @@ function closePopup(tempPopup) {
 function updateTaskStatus(task_id, newStatus) {
     const taskId = Number(task_id)
 
-    fetch("/update-task-status", {
+    fetch("/tasks/update-task-status", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({ 
@@ -108,7 +108,7 @@ function performSearch(searchInput) {
     const query = searchInput.value.trim()
     if (query.length === 0) return
     
-    window.location.href = `/search-result?query=${encodeURIComponent(query)}`
+    window.location.href = `/tasks/search-task?query=${encodeURIComponent(query)}`
 
 }
 
@@ -209,7 +209,7 @@ function saveChangesUserInfo() {
             const confirmedPassword = document.getElementById('profile-confirmedPassword').value
             const changePassword = document.getElementById('cbChangePassword').checked
 
-            fetch("/update-user", {
+            fetch("/profile/update-user", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -244,8 +244,8 @@ function showToast(message, isSuccess) {
     toast.className = isSuccess ? "primary-text toast-appear toast-success " : "primary-text toast-appear toast-error"
     document.body.appendChild(toast)
 
-    console.log("✅ Toast created:", toast);
-    console.log("✅ Toast created with class:", toast.className);
+    console.log("Toast created:", toast);
+    console.log("Toast created with class:", toast.className);
 
     setTimeout(() => {
         toast.className = "toast-hidden"
@@ -259,10 +259,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
     console.log("Current Page:", currentPage);
 
     if (currentPage === "analysis") {
-        fetch("/api/analysis")
+        fetch("/analysis/chart-data")
         .then(response => response.json())
         .then(data => {
-            console.log("📊 Fetched Data:", data);
+            console.log("Fetched Data:", data);
             initializeAnalysisCharts(data.taskHistory, data.statusCounts);
         })
         .catch(error => console.error("Error fetching data:", error));

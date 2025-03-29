@@ -27,7 +27,7 @@
                         <div class="row-container space-between <%= taskDefault.length === 0 && taskOngoing.length === 0 && taskFinished.length === 0 ? 'min-height-70' : '' %>">
                             <p class="primary-text black-text width-100">To do</p>
                             
-                            <a class="black-color" href="/task-create">
+                            <a class="black-color" href="/tasks/create-task">
                                 <i class="fas fa-plus ic-menu-size"></i>
                             </a>
 
@@ -55,8 +55,8 @@
                                     <div class="menu-container">
                                         <i class="fas fa-ellipsis-h ic-menu-size" onclick="toggleMenu('menuDropdown-<%= task.task_id %>')"></i>
                                         <ul class="menu-dropdown" id="menuDropdown-<%= task.task_id %>">
-                                            <li><a class="primary-small-text black-text" href="/task-edit/<%= task.task_id %>">Edit</a></li>
-                                            <li><a class="primary-small-text black-text" href="#">Delete</a></li>
+                                            <li><a class="primary-small-text black-text" href="/tasks/update-task/<%= task.task_id %>">Edit</a></li>
+                                            <li><a class="primary-small-text black-text" href="#" onclick="confirmDelete('<%= task.task_id %>')">Delete</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -106,8 +106,8 @@
                                     <div class="menu-container">
                                         <i class="fas fa-ellipsis-h ic-menu-size" onclick="toggleMenu('menuDropdown-<%= task.task_id %>')"></i>
                                         <ul class="menu-dropdown" id="menuDropdown-<%= task.task_id %>">
-                                            <li><a class="primary-small-text black-text" href="/task-edit/<%= task.task_id %>">Edit</a></li>
-                                            <li><a class="primary-small-text black-text" href="#">Delete</a></li>
+                                            <li><a class="primary-small-text black-text" href="/tasks/update-task/<%= task.task_id %>">Edit</a></li>
+                                            <li><a class="primary-small-text black-text" href="#" onclick="confirmDelete('<%= task.task_id %>')">Delete</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -156,7 +156,7 @@
                                     <div class="menu-container">
                                         <i class="fas fa-ellipsis-h ic-menu-size" onclick="toggleMenu('menuDropdown-<%= task.task_id %>')"></i>
                                         <ul class="menu-dropdown" id="menuDropdown-<%= task.task_id %>">
-                                            <li><a class="primary-small-text black-text" href="/task-edit/<%= task.task_id %>">Edit</a></li>
+                                            <li><a class="primary-small-text black-text" href="/tasks/update-task/<%= task.task_id %>">Edit</a></li>
                                             <li><a class="primary-small-text black-text" href="#" onclick="confirmDelete('<%= task.task_id %>')">Delete</a></li>
                                         </ul>
                                     </div>

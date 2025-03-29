@@ -11,7 +11,7 @@ exports.handleLogin = (req, res) => {
     User.findUserByUsername(username, (err, results) => {
         if (err) {
             console.log(err);
-            return res.status(500).json({ error: "Database connection error"})
+            return res.status(500).render('error', { title: "Database error", status: "500", message: err });
         }
 
         if (results.length > 0) {
@@ -22,9 +22,9 @@ exports.handleLogin = (req, res) => {
                     username: user.username,
                     profile: user.user_profile
                 }
-                res.redirect("/tasks/dashboard")
+                res.redirect("/tasks/dashboard");
             } else {
-                res.render("login", {error: "Invalid password"})
+                res.render("login", {error: "Invalid password"});
             }
         } else {
             res.render("login", {error: "User not found"})
@@ -46,7 +46,7 @@ exports.handleSignup = (req, res) => {
     User.findUserByUsername(username, (err, results) => {
         if (err) {
             console.log(err);
-            return res.status(500).json({ error: "Database connection error"});
+            return res.status(500).render('error', { title: "Database error", status: "500", message: err });
         }
 
         if (results.length > 0) {
@@ -56,7 +56,7 @@ exports.handleSignup = (req, res) => {
         User.createUser(username, password, (err) => {
             if (err) {
                 console.log(err);
-                return res.status(500).json({ error: "Database connection error"});
+                return res.status(500).render('error', { title: "Database error", status: "500", message: err });
             }
 
             res.redirect("/login");
@@ -72,7 +72,7 @@ exports.handleGenerateUsername = async (req, res) => {
         User.findUserByUsername(username, (err, results) => {
             if (err) {
                 console.error(err);
-                return res.status(500).json({ error: "Database error" });
+                return res.status(500).render('error', { title: "Database error", status: "500", message: err });
             }
 
             if (results.length === 0) {

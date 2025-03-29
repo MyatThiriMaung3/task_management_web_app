@@ -19,7 +19,7 @@ exports.getDashboard = async (req, res) => {
         });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: "Database connection error" });
+        res.status(500).render('error', { title: "Database error", status: "500", message: err });
     }
 };
 
@@ -29,10 +29,10 @@ exports.getUpdateTaskPage = (req, res) => {
     Task.findTasksByTaskId(taskId, (err, results) => {
         if (err) {
             console.log(err)
-            return res.status(500).json({ error: "Database error "})
+            return res.status(500).render('error', { title: "Database error", status: "500", message: err });
         }
 
-        if (results.length === 0) return res.status(404).json({error: "Task not found"})
+        if (results.length === 0) return res.status(500).render('error', { title: "Task Not Found", status: "404", message: "Task not found" });
 
         res.render("task-edit", { task: results[0] });
     });
@@ -45,7 +45,7 @@ exports.handleUpdateTask = (req, res) => {
     Task.updateTask(taskId, task_title, task_description, task_status, task_priority, (err, results) => {
         if (err) {
             console.log(err);
-            return res.status(500).json({ error : "Database error"});
+            return res.status(500).render('error', { title: "Database error", status: "500", message: err });
         }
 
         res.redirect("/tasks/dashboard");
@@ -63,7 +63,7 @@ exports.handleCreateTask = (req, res) => {
     Task.createTask(task_title, task_description, 'default', task_priority, username, (err, results) => {
         if (err) {
             console.log(err);
-            return res.status(500).json({ error: "Database error "});
+            return res.status(500).render('error', { title: "Database error", status: "500", message: err });
         }
 
         res.redirect("/tasks/dashboard");
@@ -76,11 +76,11 @@ exports.handleDeleteTask = (req, res) => {
     Task.deleteTask(taskId, (err, results) => {
         if (err) {
             console.log(err);
-            return res.status(500).json({ success: false, error : "Database Error"});
+            return res.status(500).render('error', { title: "Database error", status: "500", message: err });
         }
 
         if (results.length === 0) {
-            return res.status(404).json({ success: false, error: "Task not found"});
+            return res.status(500).render('error', { title: "Task Not Fount", status: "404", message: "Task not found" });
         }
 
         res.json({ success: true });
@@ -98,7 +98,7 @@ exports.handleSearchTask = (req, res) => {
     Task.findTaskByWords(username, `%${query}%`, (err, results) => {
         if (err) {
             console.log(err);
-            return res.status(500).json({ error: "Database Connection Error"});
+            return res.status(500).render('error', { title: "Database error", status: "500", message: err });
         }
 
         res.render("search-result", { tasks: results });
@@ -112,7 +112,7 @@ exports.handleUpdateTaskStatus = (req, res) => {
     Task.updateTaskStatus(taskId, newStatus, (err, results) => {
         if (err) {
             console.log(err);
-            return res.status(500).json({ success: false, message: "Database connection failed"});
+            return res.status(500).render('error', { title: "Database error", status: "500", message: err });
         }
 
         res.json({ success: true, message: "Task status updated successfully"});

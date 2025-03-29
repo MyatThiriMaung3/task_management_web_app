@@ -12,7 +12,7 @@ exports.handleUpdateProfile = (req, res) => {
     User.updateUserProfile(profileImage, username, (err, results) => {
         if (err) {
             console.log(err);
-            return res.status(500).json({ error: "Database connection error"});
+            return res.status(500).render('error', { title: "Database error", status: "500", message: err });
         }
 
         req.session.loggedInUser.profile = profileImage;
@@ -37,7 +37,7 @@ exports.handleUpdateUser = (req, res) => {
     User.findUserByUsername(username, (err, results) => {
         if (err) {
             console.log(err);
-            return res.status(500).json({ error: "Database connection error"});
+            return res.status(500).render('error', { title: "Database error", status: "500", message: err });
         }
 
         if (results.length === 0) {

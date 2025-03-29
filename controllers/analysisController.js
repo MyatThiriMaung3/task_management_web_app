@@ -23,7 +23,7 @@ exports.getAnalysisPage = async (req, res) => {
 
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: "Database connection error" });
+        res.status(500).render('error', { title: "Database error", status: "500", message: err });
     }
 };
 
@@ -53,6 +53,6 @@ exports.getChartData = async (req, res) => {
 
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: "Database connection error" });
+        res.status(500).render('error', { title: "Database error", status: "500", message: err });
     }
 };
